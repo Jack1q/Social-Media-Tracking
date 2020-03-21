@@ -1,7 +1,6 @@
 # Social-Media-Tracking
 This app fetches my Youtube, Twitter, & Instagram follower counts using
-simple webscraping and stores them in a csv file. Instagram functionality is
-still being tweaked
+simple webscraping and stores them in a csv file. 
 # How I got it to work
 1) Create a Java project with the Main.java, Main.class and WriteFile.java, WriteFile.class files. You're gonna wanna edit the Main.java file to include your own social media links and to change the entry path from my default one to wherever you want to send this data.
 
