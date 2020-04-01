@@ -1,9 +1,12 @@
 package mediabot;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 import org.apache.http.client.ClientProtocolException;
 import org.brunocvcunha.instagram4j.Instagram4j;
@@ -23,17 +26,22 @@ public class Client
   private String instagramHandle;
   private String instagramPassword;
 
-  public Client()
+  public Client() throws IOException
   {
+    loadUsernameData();
   }
 
-  public Client(String youtubeURL, String twitterHandle, String instagramHandle,
-    String instagramPassword)
+  public void loadUsernameData() throws IOException
   {
-    this.youtubeURL = youtubeURL;
-    this.twitterHandle = twitterHandle;
-    this.instagramHandle = instagramHandle;
-    this.instagramPassword = instagramPassword;
+    File usernamesFile = new File("usernames.properties");
+    FileInputStream fileInput = new FileInputStream(usernamesFile);
+    Properties userProperties = new Properties();
+    userProperties.load(fileInput);
+    fileInput.close();
+    youtubeURL = userProperties.getProperty("youtube_link");
+    twitterHandle = userProperties.getProperty("twitter_handle");
+    instagramHandle = userProperties.getProperty("instagram_handle");
+    instagramPassword = userProperties.getProperty("instagram_password");
   }
 
   public String getYTSubscribers()
@@ -41,11 +49,11 @@ public class Client
     String subCount = "";
     try
     {
-      Document channel = Jsoup.connect(getYoutubeURL()).get();
+      Document channel = Jsoup.connect(youtubeURL).get();
       subCount = channel.select("div[id=content]").text();
       subCount =
         subCount.substring(subCount.indexOf("Unsubscribe") + 11,
-          subCount.indexOf("Loading"));
+          subCount.indexOf(" Loading"));
     }
     catch (Exception e)
     {
@@ -58,20 +66,20 @@ public class Client
   public int getTwitterFollowers() throws Exception
   {
     Twitter twitter = TwitterFactory.getSingleton();
-    User user = twitter.showUser(getTwitterHandle());
+    User user = twitter.showUser(twitterHandle);
     return user.getFollowersCount();
   }
 
   public int getInstaFollowers() throws ClientProtocolException, IOException
   {
     Instagram4j instagram =
-      Instagram4j.builder().username(getInstagramHandle())
-        .password(getInstagramPassword()).build();
+      Instagram4j.builder().username(instagramHandle)
+        .password(instagramPassword).build();
     instagram.setup();
     instagram.login();
     InstagramSearchUsernameResult userResult =
       instagram
-        .sendRequest(new InstagramSearchUsernameRequest(getInstagramHandle()));
+        .sendRequest(new InstagramSearchUsernameRequest(instagramHandle));
     return userResult.getUser().follower_count;
   }
 
@@ -88,19 +96,9 @@ public class Client
     return youtubeURL;
   }
 
-  public void setYoutubeURL(String url)
-  {
-    youtubeURL = url;
-  }
-
   public String getTwitterHandle()
   {
     return twitterHandle;
-  }
-
-  public void setTwitterHandle(String handle)
-  {
-    twitterHandle = handle;
   }
 
   public String getInstagramHandle()
@@ -108,18 +106,9 @@ public class Client
     return instagramHandle;
   }
 
-  public void setInstagramHandle(String handle)
-  {
-    instagramHandle = handle;
-  }
-
   public String getInstagramPassword()
   {
     return instagramPassword;
   }
 
-  public void setInstagramPassword(String password)
-  {
-    instagramPassword = password;
-  }
 }
