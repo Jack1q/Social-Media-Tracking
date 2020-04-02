@@ -21,6 +21,12 @@ public class WriteFile
     append_to_file = append;
   }
 
+  /**
+   * Takes String parameter of textLine, which will be the scraped data, and
+   * writes it into the file output.csv
+   * 
+   * @param textLine
+   */
   public void writeToFile(String textLine) throws IOException
   {
     FileWriter write = new FileWriter(path, append_to_file);

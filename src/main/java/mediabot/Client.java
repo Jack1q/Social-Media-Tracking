@@ -31,6 +31,10 @@ public class Client
     loadUsernameData();
   }
 
+  /**
+   * This method loads the data in usernames.properties into each instance
+   * variable so that they can be used in the methods of the Client class.
+   */
   public void loadUsernameData() throws IOException
   {
     File usernamesFile = new File("usernames.properties");
@@ -43,6 +47,11 @@ public class Client
     instagramHandle = userProperties.getProperty("instagram_handle");
     instagramPassword = userProperties.getProperty("instagram_password");
   }
+
+  /**
+   * This method gets the number of subsribers for the given YouTube channel URL
+   * using pretty cheeky webscraping.
+   */
 
   public String getYTSubscribers()
   {
@@ -63,6 +72,10 @@ public class Client
     return subCount;
   }
 
+  /**
+   * This method gets the number of Twitter followers for the handle indicated
+   * in usernames.properties using the twitter4j Java library.
+   */
   public int getTwitterFollowers() throws Exception
   {
     Twitter twitter = TwitterFactory.getSingleton();
@@ -70,6 +83,10 @@ public class Client
     return user.getFollowersCount();
   }
 
+  /**
+   * This method gets the number of Instagram followers for the handle/password
+   * indicated in usernames.properties using the Instagram4j Java library.
+   */
   public int getInstaFollowers() throws ClientProtocolException, IOException
   {
     Instagram4j instagram =
@@ -83,6 +100,10 @@ public class Client
     return userResult.getUser().follower_count;
   }
 
+  /**
+   * Simply gets the date/time in MM/dd/yyyy HH:mm:ss format for bookkeeping
+   * purposes when storing follower data
+   */
   public String getDate()
   {
     DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
