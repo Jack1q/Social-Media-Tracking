@@ -1,11 +1,11 @@
 # Social-Media-Tracking
 This app fetches my Youtube, Twitter, & Instagram follower counts using
 simple webscraping and stores them in a csv file. 
-# How I Use It
+## How I Use It
 I turned the Java project into a runnable jar, and then used Windows Task Scheduling to automate the data collection. Make sure you place your twitter API keys in twitter4j.properties and your usernames in usernames.properties.
 The data will be output to 'output.csv'
 
-# How I automated the data collection
+## How I automated the data collection
 ***I have only done this in Windows*** </br>
 1) Hit Windows Key + R - then type taskschd.msc and hit enter.
 
